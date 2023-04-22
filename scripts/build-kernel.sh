@@ -9,11 +9,13 @@ clone_kernel() {
 build_kernel() {
     cd linux-stm32mp
     export KBUILD_OUTPUT=./build
-    make stm32mp15_trusted_defconfig
-    make DEVICE_TREE=stm32mp157c-dk2 all -j8
-    cd ${ROOTDIR}
+    make multi_v7_build_defconfig
+    #make menuconfig
+    #make savedefconfig
+    make zImage -j8
+    make ${DEVICE_NAME}.dtb -j8
 }
 
 source ./scripts/build-common.sh
 clone_kernel
-#build_kernel
+build_kernel
