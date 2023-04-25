@@ -30,4 +30,4 @@ build_uboot_trusted() {
 source ./scripts/build-common.sh
 clone_uboot
 build_uboot_debug
-build_uboot_trusted
+#build_uboot_trusted

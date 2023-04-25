@@ -10,9 +10,10 @@ build_kernel() {
     cd linux-stm32mp
     export KBUILD_OUTPUT=./build
     make multi_v7_build_defconfig
+    #make multi_v7_defconfig
     #make menuconfig
     #make savedefconfig
-    make zImage -j8
+    #make zImage -j8
     make ${DEVICE_NAME}.dtb -j8
 }
 
