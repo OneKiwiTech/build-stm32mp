@@ -15,3 +15,41 @@ openstlinux=st-image-weston-openstlinux-weston-stm32mp1-x86_64-toolchain-4.0.4-o
 export PATH=$ROOTDIR/$sdkdir/sysroots/x86_64-ostl_sdk-linux/usr/bin/arm-ostl-linux-gnueabi:$PATH
 export CROSS_COMPILE=arm-ostl-linux-gnueabi-
 export ARCH=arm
+
+merge_sdk() {
+    if [ ! -f "sdk/${sdkname}" ]; then
+        cd sdk
+        echo "merge file: ${sdkname}"
+        cat ${sdkname}.* > ${sdkname}
+        while [ ! -f ${sdkname} ]; do sleep 1; done
+        sync
+        #exec bash "$1" "$2"
+        cd ${ROOTDIR}
+    fi
+}
+
+extract_sdk() {
+    if [ ! -d "sdk/${sdkdirtemp}" ]; then
+        if [ -f "sdk/${sdkname}" ]; then
+            cd sdk
+            echo "extract: ${sdkname}"
+            tar -xzvf ${sdkname}
+        else 
+            echo "${sdkname} does not exist."
+        fi
+    fi
+}
+
+setup_sdk() {
+    if [ ! -d "${sdkdir}" ]; then
+        if [ -d "sdk/${sdkdirtemp}" ]; then
+            cd sdk/${sdkdirtemp}/sdk
+            ./${openstlinux} -d ${ROOTDIR}/${sdkdir}
+        fi
+    fi
+    cd ${ROOTDIR}
+}
+
+merge_sdk
+extract_sdk
+setup_sdk
